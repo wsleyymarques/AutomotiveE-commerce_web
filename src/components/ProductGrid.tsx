@@ -22,15 +22,20 @@ export const ProductGrid: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const { searchResults, isSearching, hasSearched, clearSearch } = useSearch();
 
-  // Determine which products to show
   const productsToShow = hasSearched ? searchResults : allProducts;
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/products?limit=20`);
-        setAllProducts(response.data.products || response.data);
-        setError(null);
+        const productsData = response.data.data.products;
+
+        if (Array.isArray(productsData)) {
+          setAllProducts(productsData);
+        } else {
+          console.warn('A resposta da API de produtos não retornou um array no caminho esperado.');
+          setAllProducts([]);
+        }
       } catch (err: any) {
         console.error('Erro ao carregar produtos:', err);
         setError('Erro ao carregar produtos. Verifique se o backend está funcionando.');

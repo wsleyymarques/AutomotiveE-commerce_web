@@ -37,12 +37,17 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
     setIsSearching(true);
     setHasSearched(true);
-    
+
     try {
       const response = await axios.get(`${API_BASE_URL}/products/search`, {
         params: { q: query }
       });
-      setSearchResults(response.data);
+
+
+      const productsData = response.data?.data || [];
+
+      setSearchResults(Array.isArray(productsData) ? productsData : []);
+
     } catch (error) {
       console.error('Erro ao buscar produtos:', error);
       setSearchResults([]);

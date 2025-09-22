@@ -42,12 +42,17 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const loadCart = async () => {
     if (!user) return;
-    
+
     try {
       const response = await axios.get(`${API_BASE_URL}/cart`);
-      setItems(response.data);
+
+
+      const cartItems = response.data?.data || [];
+      setItems(Array.isArray(cartItems) ? cartItems : []);
+
     } catch (error: any) {
       console.error('Erro ao carregar carrinho:', error);
+      setItems([]);
     }
   };
 

@@ -13,11 +13,11 @@ const Index = () => {
         
         <section className="py-16">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
+            <div className="text-start mb-12">
               <h2 className="text-3xl font-bold text-foreground mb-4">
                 Nossos Produtos
               </h2>
-              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              <p className="text-muted-foreground text-lg max-w-2xl ">
                 Encontre a peça perfeita para o seu veículo em nosso catálogo completo
               </p>
             </div>

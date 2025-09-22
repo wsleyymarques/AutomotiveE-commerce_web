@@ -33,7 +33,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
       onClose();
       setLoginData({ email: '', password: '' });
     } catch (error) {
-      // Error handled in context
     } finally {
       setIsLoading(false);
     }
@@ -46,9 +45,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
     try {
       await register(registerData.name, registerData.email, registerData.password);
       setRegisterData({ name: '', email: '', password: '' });
-      // Don't close modal, let user login
+      onClose();
     } catch (error) {
-      // Error handled in context
     } finally {
       setIsLoading(false);
     }

@@ -29,7 +29,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const token = localStorage.getItem('token');
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      // In a real app, you'd verify the token with the backend
       const userData = localStorage.getItem('user');
       if (userData) {
         setUser(JSON.parse(userData));
@@ -38,6 +37,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(false);
   }, []);
 
+
   const login = async (email: string, password: string) => {
     try {
       const response = await axios.post(`${API_BASE_URL}/auth/login`, {
@@ -45,14 +45,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         password,
       });
 
-      const { token, user: userData } = response.data;
-      
+      const { token, user: userData } = response.data.data;
+
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(userData));
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      
+
       setUser(userData);
-      
+
       toast({
         title: "Login realizado com sucesso!",
         description: `Bem-vindo de volta, ${userData.name}!`,
@@ -76,9 +76,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         password,
       });
 
+      const { token, user: userData } = response.data.data;
+
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(userData));
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+      setUser(userData);
+
       toast({
         title: "Conta criada com sucesso!",
-        description: "Agora você pode fazer login.",
+        description: `Bem-vindo, ${userData.name}!`,
       });
     } catch (error: any) {
       const message = error.response?.data?.error || 'Erro ao criar conta';
