@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import { Search, ShoppingCart, User, LogOut, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,7 +24,9 @@ export const Header: React.FC = () => {
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    await performSearch(searchQuery);
+    if (searchQuery.trim()) {
+      await performSearch(searchQuery);
+    }
   };
 
   const handleClearSearch = () => {
@@ -35,38 +37,16 @@ export const Header: React.FC = () => {
       <>
         <header className="bg-card border-b border-border shadow-sm sticky top-0 z-40">
           <div className="container mx-auto px-4 py-3">
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center justify-between gap-x-4 gap-y-3 flex-wrap">
+
               <div className="flex items-center">
                 <h1 className="text-2xl text-accent font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                   AutoPeças Shoppe
                 </h1>
               </div>
 
-              <form onSubmit={handleSearch} className="flex-1 max-w-2xl">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                  <Input
-                      type="text"
-                      placeholder="Buscar peças automotivas..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10 pr-10 py-2 w-full border-border focus:border-primary transition-colors"
-                  />
-                  {hasSearched && (
-                      <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          onClick={handleClearSearch}
-                          className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0"
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                  )}
-                </div>
-              </form>
-
-              <div className="flex items-center gap-3">
+              {/* A ÚNICA MUDANÇA É NESTA LINHA ABAIXO */}
+              <div className="flex items-center gap-3 md:order-last">
                 <Button
                     variant="outline"
                     size="sm"
@@ -79,7 +59,7 @@ export const Header: React.FC = () => {
                     {totalItems}
                   </span>
                   )}
-                  <span className="hidden sm:inline ml-2">Carrinho</span>
+                  <span className="hidden xs:inline ml-2">Carrinho</span>
                 </Button>
 
                 {user ? (
@@ -87,7 +67,7 @@ export const Header: React.FC = () => {
                       <DropdownMenuTrigger asChild>
                         <Button variant="outline" size="sm">
                           <User className="h-4 w-4" />
-                          <span className="hidden sm:inline ml-2">Perfil</span>
+                          <span className="hidden xs:inline ml-2">Perfil</span>
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="w-56">
@@ -106,10 +86,35 @@ export const Header: React.FC = () => {
                         onClick={() => setShowLoginModal(true)}
                     >
                       <User className="h-4 w-4" />
-                      <span className="hidden sm:inline ml-2">Entrar</span>
+                      <span className="hidden xs:inline ml-2">Entrar</span>
                     </Button>
                 )}
               </div>
+
+              <form onSubmit={handleSearch} className="w-full md:flex-1 md:max-w-2xl order-last md:order-none">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                  <Input
+                      type="text"
+                      placeholder="Buscar peças..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10 pr-10 py-2 w-full border-border focus:border-primary transition-colors"
+                  />
+                  {hasSearched && (
+                      <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={handleClearSearch}
+                          className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                  )}
+                </div>
+              </form>
+
             </div>
           </div>
         </header>
